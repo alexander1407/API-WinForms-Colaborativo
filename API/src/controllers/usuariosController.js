@@ -23,6 +23,20 @@ module.exports = {
             });
         }
     },
+getUsuarioById: (req, res) => {
+        let { id } = req.params;
 
+        usuariosModel.getUsuarioById(id, (err, result) => {
+            if (err) {
+                res.status(500).json({ error: err.message });
+                return;
+            }
+            if (result.length === 0) {
+                res.status(404).json({ mensaje: "Registro no encontrado" });
+                return;
+            }
+            res.status(200).json({ data: result });
+        });
+    },
 
 };
