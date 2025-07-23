@@ -61,6 +61,11 @@ namespace WinFormsUsuariosAPI
             InicializarComboBoxSexo();
             await LoadUsuarios();
             EstilizarDataGridView();
+
+            //Deshabilita Modificar y Eliminar, habilita Agregar
+            btnModificar.Enabled = false;
+            btnEliminar.Enabled = false;
+            btnAgregar.Enabled = true;
         }
 
         private async Task LoadUsuarios()
@@ -130,14 +135,14 @@ namespace WinFormsUsuariosAPI
             finally
             {
                 lblEstado.Text = "Registro completado";
-                await Task.Delay(1000);
+                await Task.Delay(2000);
 
                 progressBarCarga.Visible = false;
                 lblEstado.Visible = false;
                 lblEstado.Text = "";
                 btnAgregar.Enabled = true;
 
-                // 👉 Mostrar el mensaje de éxito *después* de ocultar la barra
+                // Mostrar el mensaje de éxito *después* de ocultar la barra
                 if (exito)
                 {
                     MessageBox.Show("Ciudadano registrado con éxito.", "Registro exitoso", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -246,7 +251,7 @@ namespace WinFormsUsuariosAPI
             finally
             {
                 lblEstado.Text = "Eliminación completada";
-                await Task.Delay(1000);
+                await Task.Delay(2000);
 
                 progressBarCarga.Visible = false;
                 lblEstado.Visible = false;
@@ -260,12 +265,18 @@ namespace WinFormsUsuariosAPI
         {
             if (dataGridView1.SelectedRows.Count > 0)
             {
+
                 var usuario = (Usuario)dataGridView1.SelectedRows[0].DataBoundItem;
                 selectedUserId = usuario.id;
                 txtNombre.Text = usuario.nombre;
                 txtApellidos.Text = usuario.apellidos;
                 txtEmail.Text = usuario.email;
                 cmbSexo.SelectedItem = usuario.sexo;
+
+                // 🟢 Habilita Modificar y Eliminar, deshabilita Agregar
+                btnModificar.Enabled = true;
+                btnEliminar.Enabled = true;
+                btnAgregar.Enabled = false;
             }
         }
 
@@ -277,6 +288,11 @@ namespace WinFormsUsuariosAPI
             cmbSexo.SelectedIndex = 0;
             txtBuscarId.Clear();
             selectedUserId = null;
+
+            //Deshabilita Modificar y Eliminar, habilita Agregar
+            btnModificar.Enabled = false;
+            btnEliminar.Enabled = false;
+            btnAgregar.Enabled = true;
         }
 
         private async void btnBuscar_Click(object sender, EventArgs e)
@@ -396,11 +412,12 @@ namespace WinFormsUsuariosAPI
             await LoadUsuarios();
 
             // Retrasar la deselección hasta que el DataGridView termine de procesar el DataSource
-            await Task.Delay(100); // Pequeño retraso para que termine el renderizado y selección automática
+            await Task.Delay(0); // Pequeño retraso para que termine el renderizado y selección automática
             dataGridView1.ClearSelection();
 
             ClearForm();
             selectedUserId = null;
+
         }
 
     }
