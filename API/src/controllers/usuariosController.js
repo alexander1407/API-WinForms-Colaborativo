@@ -61,5 +61,16 @@ getUsuarioById: (req, res) => {
             res.status(200).json({ message: "Usuario actualizado correctamente" });
         });
     },
+     deleteUsuario: (req, res) => {
+        let id = req.params.id;
+
+        usuariosModel.deleteUsuario(id, (err, result) => {
+            if (err) {
+                res.status(500).json({ error: err.message });
+                return;
+            }
+            res.status(200).json({ message: "Usuario eliminado correctamente" });
+        });
+    },
 
 };
