@@ -38,5 +38,16 @@ getUsuarioById: (req, res) => {
             res.status(200).json({ data: result });
         });
     },
+    postUsuario: (req, res) => {
+        let { nombre, apellidos, email, sexo } = req.body;
+
+        usuariosModel.postUsuario(nombre, apellidos, email, sexo, (err, result) => {
+            if (err) {
+                res.status(500).json({ error: err.message });
+                return;
+            }
+            res.status(200).json({ message: "Usuario ingresado correctamente" });
+        });
+    },
 
 };
